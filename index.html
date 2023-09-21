@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatic Certificate System</title>
+    <style>
+       /* Reset default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* Set a background color for the entire page */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url(https://png.pngtree.com/png-vector/20230607/ourmid/pngtree-elegant-modern-blank-blue-gold-graduation-certificate-border-frame-vector-png-image_7122590.png);
+    display: flex;
+    background-repeat: no-repeat;
+    background-size: cover;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+form {
+    text-align: center;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button[type="button"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+button[type="button"]:hover {
+    background-color: #0056b3;
+}
+
+.certificate {
+    border: 2px solid #333;
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+    background-image: url(https://png.pngtree.com/png-vector/20230607/ourmid/pngtree-elegant-modern-blank-blue-gold-graduation-certificate-border-frame-vector-png-image_7122590.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.download-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.download-btn:hover {
+    background-color: #0056b3;
+}
+
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Generate Certificate</h1>
+        <form id="certificateForm">
+            <label for="name">Recipient's Name:</label>
+            <input type="text" id="name" required>
+            <br><br>
+            <label for="date">Date:</label>
+            <input type="date" id="date" required>
+            <br><br>
+            <button type="button" onclick="generateCertificate()">Generate Certificate</button>
+        </form>
+        <div class="certificate" id="generatedCertificate" style="display: none;">
+            <h2>Certificate of Completion</h2>
+            <p>This is to certify that</p>
+            <h3 id="certificateName"></h3>
+            <p>has successfully completed the course on</p>
+            <h3 id="certificateDate"></h3>
+            <button class="download-btn" onclick="downloadCertificate()">Download Certificate</button>
+        </div>
+    </div>
+
+    <script>
+        function generateCertificate() {
+            const name = document.getElementById('name').value;
+            const date = document.getElementById('date').value;
+
+            // Update the certificate with user input
+            document.getElementById('certificateName').textContent = name;
+            document.getElementById('certificateDate').textContent = date;
+
+            // Show the generated certificate and download button
+            document.getElementById('generatedCertificate').style.display = 'block';
+            document.querySelector('.download-btn').style.display = 'block';
+        }
+
+        function downloadCertificate() {
+            const certificateContent = document.querySelector('.certificate').outerHTML;
+            const blob = new Blob([certificateContent], { type: 'text/pdf' });
+            const url = URL.createObjectURL(blob);
+
+            // Create a temporary anchor element to trigger the download
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'certificate.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            // Revoke the URL to free up memory
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
